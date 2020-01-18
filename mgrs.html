@@ -1,0 +1,40 @@
+
+<script type="text/html" data-template-name="mgrs">
+    <!-- <div class="form-row">
+        <label for="node-input-precision"><i class="icon-wrench"></i> Precision</label>
+        <input type="text" id="node-input-precision" placeholder="2" style="width:35px"> digits
+    </div> -->
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="mgrs">
+    <p>If <code>msg.payload</code> contains <code>.lat</code> and <code>.lon</code> properties, this node adds a corresponding MGRS location as <code>msg.payload.mgrs</code>.</p>
+    <p>If the object contains a <code>msg.payload.mgrs</code> property and not <code>.lat</code> and <code>.lon</code> they will be created.</p>
+    <p>The <code>.mgrs</code> property should be a string, e.g. 30U XB 15652 56680.
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('mgrs',{
+        category: 'location',
+        color:"#E6F8E0",
+        defaults: {
+            name: {value:""},
+            precision: {value:"5"}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "white-globe.png",
+        label: function() {
+            return this.name||"MGRS";
+        },
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        },
+        oneditprepare: function() {
+            $( "#node-input-precision" ).spinner({min:1,max:5});
+        }
+    });
+</script>

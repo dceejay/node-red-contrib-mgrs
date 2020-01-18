@@ -1,0 +1,23 @@
+{
+    "name"          : "node-red-contrib-mgrs",
+    "version"       : "0.1.0",
+    "description"   : "A Node-RED node to convert co-ordinates to and from mgrs",
+    "dependencies"  : {
+    },
+    "repository" : {
+        "type":"git",
+        "url":"https://github.com/dceejay/node-red-contrib-mgrs"
+    },
+    "license": "Apache-2.0",
+    "keywords": [ "node-red", "map", "world", "mgrs" ],
+    "node-red"      : {
+        "nodes"     : {
+            "mgrs": "mgrs.js"
+        }
+    },
+    "author": {
+        "name": "Dave Conway-Jones",
+        "email": "dceejay@gmail.com",
+        "url": "http://nodered.org"
+    }
+}
