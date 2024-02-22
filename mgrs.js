@@ -1,10 +1,10 @@
 
 module.exports = function(RED) {
-    
+
     function MGRSNode(n) {
 
-        function MGRSString (Lat, Long) { 
-            if (Lat < -80) return 'Too far South' ; 
+        function MGRSString (Lat, Long) {
+            if (Lat < -80) return 'Too far South' ;
             if (Lat > 84) return 'Too far North' ;
             var c = 1 + Math.floor((Long+180)/6);
             var e = c*6 - 183;
@@ -27,7 +27,7 @@ module.exports = function(RED) {
             var aa = p*n*t + (p/6.0*Math.pow (n,3)*u*Math.pow (t,3)) + (p/120.0*Math.pow (n,5)*w*Math.pow (t,5)) + (p/5040.0*Math.pow (n,7)*y*Math.pow (t,7));
             var ab = 6367449.14570093*(k - (0.00251882794504*Math.sin (2*k)) + (0.00000264354112*Math.sin (4*k)) - (0.00000000345262*Math.sin (6*k)) + (0.000000000004892*Math.sin (8*k))) + (q/2.0*p*Math.pow (n,2)*Math.pow (t,2)) + (q/24.0*p*Math.pow (n,4)*v*Math.pow (t,4)) + (q/720.0*p*Math.pow (n,6)*x*Math.pow (t,6)) + (q/40320.0*p*Math.pow (n,8)*z*Math.pow (t,8));
             aa = aa*0.9996 + 500000.0;
-            ab = ab*0.9996; 
+            ab = ab*0.9996;
             if (ab < 0.0) ab += 10000000.0;
             var ad = 'CDEFGHJKLMNPQRSTUVWXX'.charAt (Math.floor (Lat/8 + 10));
             var ae = Math.floor (aa/100000);
@@ -43,7 +43,7 @@ module.exports = function(RED) {
                     val = '00' + val
                 } else if (val < 10000) {
                     val = '0' + val
-                } 
+                }
                 return val
             }
             aa = pad(Math.floor(aa%100000));
@@ -54,7 +54,13 @@ module.exports = function(RED) {
         function LatLongFromMGRSstring (a) {
             var b = a.trim();
             b = b.match(/\S+/g);
-            if (b == null || b.length != 4) return [false,null,null];
+            if (b == null) return [false,null,null];
+            if (b.length == 1) {
+                b = b[0];
+                var c = b.substr(5)
+                b = (b.substr(0,3)+" "+b.substr(3,2)+" "+c.substr(5,c.length/2)+" "+c.substr(c.length/2)).split(" ");
+            }
+            if (b.length != 4) return [false,null,null];
             var c = (b[0].length < 3) ? b[0][0] : b[0].slice(0,2);
             var d = (b[0].length < 3) ? b[0][1] : b[0][2];
             var e = (c*6-183)*Math.PI / 180;
@@ -70,7 +76,7 @@ module.exports = function(RED) {
             var n = l*1000000 + Number(b[3]);
             m -= 500000.0;
             if (d < 'N') n -= 10000000.0;
-            m /= 0.9996; 
+            m /= 0.9996;
             n /= 0.9996;
             var o = n / 6367449.14570093;
             var p = o + (0.0025188266133249035*Math.sin(2.0*o)) + (0.0000037009491206268*Math.sin(4.0*o)) + (0.0000000074477705265*Math.sin(6.0*o)) + (0.0000000000170359940*Math.sin(8.0*o));
@@ -116,8 +122,8 @@ module.exports = function(RED) {
                     msg.payload.lat = msg.payload.lat || ll[1];
                     msg.payload.lon = msg.payload.lon || ll[2];
                 }
-                else { 
-                    node.error("Bad value "+msg.payload.mgrs,msg); 
+                else {
+                    node.error("Bad value "+msg.payload.mgrs,msg);
                 }
                 node.send(msg);
             }
