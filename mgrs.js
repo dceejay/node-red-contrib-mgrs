@@ -1,6 +1,5 @@
 
 module.exports = function(RED) {
-
     function MGRSNode(n) {
 
         function MGRSString (Lat, Long) {
@@ -111,20 +110,23 @@ module.exports = function(RED) {
 
         RED.nodes.createNode(this,n);
         this.precision = n.precision || 5;
+        this.property = n.property || "payload";
         var node = this;
         this.on("input", function(msg) {
-            if ((typeof msg.payload.lat !== "undefined") && (typeof msg.payload.lon !== "undefined")) {
-                msg.payload.mgrs = MGRSString(msg.payload.lat*1, msg.payload.lon*1);
+            var value = RED.util.getMessageProperty(msg,node.property);
+            if ((typeof value.lat !== "undefined") && (typeof value.lon !== "undefined")) {
+                value.mgrs = MGRSString(value.lat*1, value.lon*1);
             }
-            if (msg.payload.mgrs !== "undefined") {
-                var ll = LatLongFromMGRSstring(msg.payload.mgrs);
+            if (value.mgrs !== "undefined") {
+                var ll = LatLongFromMGRSstring(value.mgrs);
                 if (ll[0]) {
-                    msg.payload.lat = msg.payload.lat || ll[1];
-                    msg.payload.lon = msg.payload.lon || ll[2];
+                    value.lat = value.lat || ll[1];
+                    value.lon = value.lon || ll[2];
                 }
                 else {
-                    node.error("Bad value "+msg.payload.mgrs,msg);
+                    node.error("Bad value "+value.mgrs,msg);
                 }
+                RED.util.setMessageProperty(msg,node.property,value);
                 node.send(msg);
             }
         });

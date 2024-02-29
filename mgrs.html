@@ -8,6 +8,10 @@
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
+    <div class="form-row">
+        <label for="node-input-property"><i class="fa fa-ellipsis-h"></i> <span data-i18n="node-red:common.label.property"></span></label>
+        <input type="text" id="node-input-property" style="width:70%;"/>
+    </div>
 </script>
 
 <script type="text/html" data-help-name="mgrs">
@@ -22,7 +26,8 @@
         color:"#E6F8E0",
         defaults: {
             name: {value:""},
-            precision: {value:"5"}
+            precision: {value:"5"},
+            property: {value:"payload",required:true}
         },
         inputs:1,
         outputs:1,
@@ -35,6 +40,10 @@
         },
         oneditprepare: function() {
             $( "#node-input-precision" ).spinner({min:1,max:5});
+            if (this.property === undefined) {
+                $("#node-input-property").val("payload");
+            }
+            $("#node-input-property").typedInput({default:'msg',types:['msg']});
         }
     });
 </script>
