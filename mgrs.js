@@ -51,7 +51,9 @@ module.exports = function(RED) {
         }
 
         function LatLongFromMGRSstring (a) {
+            // nnl ll nnnnn nnnnn 35VLD6787561669 56JMS8044325375
             var b = a.trim();
+            b = b.replace(/\s+/g, '');
             b = b.match(/\S+/g);
             if (b == null) return [false,null,null];
             if (b.length == 1) {

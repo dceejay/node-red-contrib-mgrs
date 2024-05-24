@@ -17,4 +17,4 @@ If the object contains a `.mgrs` property as below, and not `.lat` and `.lon` th
 
     msg.payload.mgrs - string - e.g. 30U XB 15652 56680
 
-The MGRS may contain less precision if required, e.g. 30U XB 1 5, but does require spaces between the 4 parts. 
+The MGRS may contain less precision if required, e.g. 30U XB 1 5
