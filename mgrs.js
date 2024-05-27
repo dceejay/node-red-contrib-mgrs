@@ -58,8 +58,8 @@ module.exports = function(RED) {
             if (b == null) return [false,null,null];
             if (b.length == 1) {
                 b = b[0];
-                var c = b.substr(5)
-                b = (b.substr(0,3)+" "+b.substr(3,2)+" "+c.substr(5,c.length/2)+" "+c.substr(c.length/2)).split(" ");
+                var bb = b.substr(5);
+                b = (b.substr(0,3)+" "+b.substr(3,2)+" "+bb.substr(0,bb.length/2)+" "+bb.substr(bb.length/2)).split(" ");
             }
             if (b.length != 4) return [false,null,null];
             var c = (b[0].length < 3) ? b[0][0] : b[0].slice(0,2);
