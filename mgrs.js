@@ -54,6 +54,8 @@ module.exports = function(RED) {
             // nnl ll nnnnn nnnnn 35VLD6787561669 56JMS8044325375
             var b = a.trim();
             b = b.replace(/\s+/g, '');
+            if (b.length % 2 !== 1) { return [ false, null, null]; }
+            if (isNaN(Number(b.substr(0,2)))) { return [ false, null, null]; }
             b = b.match(/\S+/g);
             if (b == null) return [false,null,null];
             if (b.length == 1) {
@@ -119,17 +121,20 @@ module.exports = function(RED) {
             if ((typeof value.lat !== "undefined") && (typeof value.lon !== "undefined")) {
                 value.mgrs = MGRSString(value.lat*1, value.lon*1);
             }
-            if (value.mgrs !== "undefined") {
+            if (value.mgrs !== undefined && typeof value.mgrs === "string" && value.mgrs.length > 0) {
                 var ll = LatLongFromMGRSstring(value.mgrs);
                 if (ll[0]) {
                     value.lat = value.lat || ll[1];
                     value.lon = value.lon || ll[2];
                 }
                 else {
-                    node.error("Bad value "+value.mgrs,msg);
+                    node.error("Bad mgrs value "+value.mgrs,msg);
                 }
                 RED.util.setMessageProperty(msg,node.property,value);
                 node.send(msg);
+            }
+            else {
+                node.error("Invalid mgrs property :: "+value.mgrs+" ::",msg);
             }
         });
     }
