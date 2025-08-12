@@ -54,10 +54,10 @@ module.exports = function(RED) {
             // nnl ll nnnnn nnnnn 35VLD6787561669 56JMS8044325375
             var b = a.trim();
             b = b.replace(/\s+/g, '');
-            if (b.length % 2 !== 1) { return [ false, null, null]; }
-            if (isNaN(Number(b.substr(0,2)))) { return [ false, null, null]; }
+            if (b.length % 2 !== 1) { return [ false, b, null, "Incorrect length"]; }
+            if (isNaN(Number(b.substr(0,2)))) { return [ false, b, null, "Non Numeric Grid zone"]; }
             b = b.match(/\S+/g);
-            if (b == null) return [false,null,null];
+            if (b == null) return [false,b,null,"Contains Whitespace"];
             if (b.length == 1) {
                 b = b[0];
                 var bb = b.substr(5);
@@ -128,7 +128,7 @@ module.exports = function(RED) {
                     value.lon = value.lon || ll[2];
                 }
                 else {
-                    node.error("Bad mgrs value "+value.mgrs,msg);
+                    node.error("Bad mgrs value "+ll[1]+" :: "+ll[3],msg);
                 }
                 RED.util.setMessageProperty(msg,node.property,value);
                 node.send(msg);
