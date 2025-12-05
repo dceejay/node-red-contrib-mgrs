@@ -47,7 +47,7 @@ module.exports = function(RED) {
             }
             aa = pad(Math.floor(aa%100000));
             ab = pad(Math.floor(ab%100000));
-            return c + ad + ' ' + af + ah + ' ' + aa + ' ' + ab;
+            return c + ad + af + ah + ' ' + aa + ' ' + ab;
         }
 
         function LatLongFromMGRSstring (a) {
